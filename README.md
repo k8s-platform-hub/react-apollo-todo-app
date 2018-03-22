@@ -76,4 +76,4 @@ Cluster state:      Synced
 
 # Exploring Hasura Features
 
-To explore the Hasura features, checkout our `hello-react` guide [here](https://hasura.io/hub/projects/hasura/hello-react).
+To explore the Hasura features and learn how to use them, checkout our 20 minute `hello-react` guide [here](https://hasura.io/hub/projects/hasura/hello-react).
