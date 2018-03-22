@@ -1,55 +1,51 @@
-# base
+# react-apollo-todo-app
 
-A blank template to be used as a starting point to build projects on Hasura. A "project" is a "gittable" directory in the file system, which captures all the information regarding clusters, services and migrations. It can also be used to keep source code for custom services that you write.
+This is a basic todo app built on react. The app uses Hasura for its backend, leveraging the following features of Hasura:
 
-## Files and Directories
+- Deploy the react app
+- Hasura Authentication the Auth UI Kit
+- Hasura Database
+- GraphQL queries provided by Hasura
 
-The project (a.k.a. project directory) has a particular directory structure and it has to be maintained strictly, else `hasura` cli would not work as expected. A representative project is shown below:
+# Pre-requisites
 
-```
-.
-├── hasura.yaml
-├── clusters.yaml
-├── conf
-│   ├── authorized-keys.yaml
-│   ├── auth.yaml
-│   ├── ci.yaml
-│   ├── domains.yaml
-│   ├── filestore.yaml
-│   ├── gateway.yaml
-│   ├── http-directives.conf
-│   ├── notify.yaml
-│   ├── postgres.yaml
-│   ├── routes.yaml
-│   └── session-store.yaml
-├── migrations
-│   ├── 1504788327_create_table_userprofile.down.yaml
-│   ├── 1504788327_create_table_userprofile.down.sql
-│   ├── 1504788327_create_table_userprofile.up.yaml
-│   └── 1504788327_create_table_userprofile.up.sql
-└── microservices 
-    ├── adminer
-    │   └── k8s.yaml
-    └── flask
-        ├── src/
-        ├── k8s.yaml
-        └── Dockerfile
+- Ensure that you have the [HasuraCLI](https://docs.hasura.io/0.15/manual/install-hasura-cli.html) installed on your local machine.
+- Login into Hasura by running the following command on your command shell
+
+```bash
+hasura login
 ```
 
-### `hasura.yaml`
+# Quickstart
 
-This file contains some metadata about the project, namely a name, description and some keywords. Also contains `platformVersion` which says which Hasura platform version is compatible with this project.
+## Getting the project
 
-### `clusters.yaml`
+To get the project, run the following in your command shell:
 
-Info about the clusters added to this project can be found in this file. Each cluster is defined by it's name allotted by Hasura. While adding the cluster to the project you are prompted to give an alias, which is just hasura by default. The `kubeContext` mentions the name of kubernetes context used to access the cluster, which is also managed by hasura. The `config` key denotes the location of cluster's metadata on the cluster itself. This information is parsed and cluster's metadata is appended while conf is rendered. `data` key is for holding custom variables that you can define.
-
-```yaml
-- name: h34-ambitious93-stg
-  alias: hasura
-  kubeContext: h34-ambitious93-stg
-  config:
-    configmap: controller-conf
-    namespace: hasura
-  data: null  
+```bash
+hasura quickstart hasura/react-todo
 ```
+
+## Deploying the project
+
+Deploying the project is equivalent to pushing to a remote git repo
+
+```bash
+cd react-todo
+git add . && git commit -m "Initial commit"
+git push hasura master
+```
+
+## Opening the react app in your browser
+
+After you are done deploying the project, you can open up the react app in your browser by:
+
+```bash
+hasura microservice open ui
+```
+
+# Authentication
+
+This quickstart uses Hasura's Auth UI Kit for its authentication needs.
+
+The configuration is just three lines added to your `conf/routes.yaml` file.
