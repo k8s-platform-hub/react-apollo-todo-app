@@ -15,7 +15,7 @@ class TodoList extends React.Component {
 
     if (this.props.data.error) {
       return (
-        <div>{this.state.error}</div>
+        <div>{this.props.data.error}</div>
       );
     }
 

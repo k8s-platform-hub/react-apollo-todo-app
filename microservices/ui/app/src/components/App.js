@@ -22,13 +22,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const userInfo = localStorage.getItem(USER_INFO_KEY);
-    if (userInfo) {
-      this.setState({
-        ...this.state,
-        loading: false,
-        userInfo: JSON.parse(userInfo)
-      })
-    } else {
+    if (!userInfo) {
       this.showLoadingIndicator(true);
       var url = AUTH_URL;
       var requestOptions = {
@@ -66,8 +60,13 @@ export default class App extends React.Component {
           error: error
         });
       });
+    } else {
+      this.setState({
+        ...this.state,
+        loading: false,
+        userInfo: JSON.parse(userInfo)
+      })
     }
-
   }
 
   render() {
