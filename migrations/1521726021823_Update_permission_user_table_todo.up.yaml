@@ -1,0 +1,12 @@
+- args:
+    role: user
+    table: todo
+  type: drop_insert_permission
+- args:
+    permission:
+      allow_upsert: true
+      check:
+        user_id: {}
+    role: user
+    table: todo
+  type: create_insert_permission
