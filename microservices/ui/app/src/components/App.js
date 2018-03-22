@@ -23,6 +23,7 @@ export default class App extends React.Component {
   componentDidMount() {
     const userInfo = localStorage.getItem(USER_INFO_KEY) || null;
     if (!userInfo) {
+      console.log('UserInfo is null');
       this.showLoadingIndicator(true);
       var url = AUTH_URL;
       var requestOptions = {
@@ -61,6 +62,8 @@ export default class App extends React.Component {
         });
       });
     } else {
+      console.log('UserInfo is not null');
+      console.log(userInfo);
       this.setState({
         ...this.state,
         loading: false,
