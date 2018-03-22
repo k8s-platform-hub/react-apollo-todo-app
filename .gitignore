@@ -1,1 +1,3 @@
 .hasura
+node_modules
+public
