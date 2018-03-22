@@ -23,7 +23,7 @@ hasura login
 To get the project, run the following in your command shell:
 
 ```bash
-hasura quickstart hasura/react-todo
+hasura quickstart hasura/react-apollo-todo-app
 ```
 
 ## Deploying the project
