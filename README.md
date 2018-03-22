@@ -31,7 +31,7 @@ hasura quickstart hasura/react-apollo-todo-app
 Deploying the project is equivalent to pushing to a remote git repo
 
 ```bash
-cd react-todo
+cd react-apollo-todo-app
 git add . && git commit -m "Initial commit"
 git push hasura master
 ```
