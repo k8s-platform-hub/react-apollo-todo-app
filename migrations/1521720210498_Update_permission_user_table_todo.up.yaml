@@ -1,0 +1,13 @@
+- args:
+    permission:
+      columns:
+      - task
+      - completed
+      - user_id
+      - id
+      filter:
+        id:
+          $eq: X-HASURA-USER-ID
+    role: user
+    table: todo
+  type: create_select_permission
