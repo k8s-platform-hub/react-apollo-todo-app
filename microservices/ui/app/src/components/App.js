@@ -21,7 +21,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    const userInfo = localStorage.getItem(USER_INFO_KEY);
+    const userInfo = localStorage.getItem(USER_INFO_KEY) || null;
     if (!userInfo) {
       this.showLoadingIndicator(true);
       var url = AUTH_URL;
