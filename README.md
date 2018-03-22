@@ -44,8 +44,36 @@ After you are done deploying the project, you can open up the react app in your 
 hasura microservice open ui
 ```
 
-# Authentication
+# React App Code
 
-This quickstart uses Hasura's Auth UI Kit for its authentication needs.
+You can find the code for the react app in the `microservices/ui/app` directory.
 
-The configuration is just three lines added to your `conf/routes.yaml` file.
+# Local Development
+
+To run the app locally, you need to run the following inside the `microservices/ui/app` directory
+
+```bash
+REACT_APP_CLUSTER_NAME=<cluster-name> npm run start
+```
+
+Here, the `REACT_APP_CLUSTER_NAME` is the name of the cluster assigned to you when you quickstarted this project. To get the name of your cluster, run the following command inside the project directory:
+
+```bash
+hasura cluster status
+```
+
+This will print out the following output:
+
+```bash
+Cluster name:       blues54                       
+Cluster alias:      hasura
+Kubectl context:    blues54
+Platform version:   v0.15.31
+Cluster state:      Synced
+```
+
+`blues54` is the name of the cluster in this case, you will have a different name.
+
+# Exploring Hasura Features
+
+To explore the Hasura features, checkout our `hello-react` guide [here](https://hasura.io/hub/projects/hasura/hello-react).
