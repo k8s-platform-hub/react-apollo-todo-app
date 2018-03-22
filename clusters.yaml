@@ -1,0 +1,7 @@
+- alias: hasura
+  config:
+    configmap: controller-conf
+    namespace: blues54-hasura
+  data: null
+  kubeContext: blues54
+  name: blues54
