@@ -1,6 +1,5 @@
 import React from 'react';
-import { compose } from 'react-apollo'
-import { graphql } from 'react-apollo';
+import { Mutation } from "react-apollo";
 import '../../styles/Todo.css';
 
 import {
@@ -9,7 +8,7 @@ import {
   MUTATION_TODO_DELETE
 } from '../../graphQueries/todoQueries';
 
-class Todo extends React.Component {
+export default class Todo extends React.Component {
 
   handleToggleTodo = () => {
     this._toggleTodo();
@@ -25,14 +24,19 @@ class Todo extends React.Component {
     const todo = this.props.todo;
     return (
       <div className="parentContainer">
-        <li className="todoItem" onClick={this.handleToggleTodo}>
-          {
-            todo.completed ?
-              <strike className="todoLabel">{todo.task}</strike> :
-              <label className="todoLabel">{todo.task}</label>
-          }
-          <label className="deleteLabel" onClick={this.handleDeleteTodo}>Delete</label>
-        </li>
+        <Mutation mutation={MUTATION_TODO_UPDATE}>
+          {(updateTodo) => {
+            <li className="todoItem" onClick={this.handleToggleTodo}>
+              {
+                todo.completed ?
+                  <strike className="todoLabel">{todo.task}</strike> :
+                  <label className="todoLabel">{todo.task}</label>
+              }
+              <label className="deleteLabel" onClick={this.handleDeleteTodo}>Delete</label>
+            </li>
+          }}
+        </Mutation>
+
       </div>
     )
   }
@@ -77,14 +81,3 @@ class Todo extends React.Component {
     })
   }
 }
-
-const TodoWithMutation = compose(
-  graphql(MUTATION_TODO_UPDATE, {
-    name: 'toggleTodo'
-  }),
-  graphql(MUTATION_TODO_DELETE, {
-    name: 'deleteTodo'
-  })
-)(Todo);
-
-export default TodoWithMutation;

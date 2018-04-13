@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
+import { Mutation } from "react-apollo";
 import '../../styles/Todo.css';
 
 import {
@@ -7,7 +7,7 @@ import {
   MUTATION_TODO_ADD
 } from '../../graphQueries/todoQueries';
 
-class TodoInput extends React.Component {
+export default class TodoInput extends React.Component {
 
   constructor() {
     super();
@@ -23,11 +23,28 @@ class TodoInput extends React.Component {
     });
   }
 
-  handleTextboxKeyPress = (e) => {
+  handleTextboxKeyPress = (e, addTodo) => {
     if (e.key === 'Enter') {
       const newTask = this.state.textboxValue;
       const userId = this.props.userId;
-      this._addTodo(newTask, userId);
+      addTodo({
+        variables: {
+          objects: [{
+            task: newTask,
+            user_id: userId,
+            completed: false
+          }]
+        },
+        update: (store, { data: { insert_todo }}) => {
+          const data = store.readQuery({ query: QUERY_TODO })
+          const insertedTodo = insert_todo.returning;
+          data.todo.splice(0, 0, insertedTodo[0])
+          store.writeQuery({
+            query: QUERY_TODO,
+            data
+          })
+        }
+      })
     }
   }
 
@@ -40,11 +57,11 @@ class TodoInput extends React.Component {
           completed: false
         }]
       },
-      update: (store, { data: { insert_todo }}) => {
-        const data = store.readQuery({ query: QUERY_TODO })
+      update: (cache, { data: { insert_todo }}) => {
+        const data = cache.readQuery({ query: QUERY_TODO })
         const insertedTodo = insert_todo.returning;
         data.todo.splice(0, 0, insertedTodo[0])
-        store.writeQuery({
+        cache.writeQuery({
           query: QUERY_TODO,
           data
         })
@@ -58,16 +75,16 @@ class TodoInput extends React.Component {
 
   render() {
     return (
-      <div className="parentContainer">
-        <input className="input" placeholder="Add a todo" value={this.state.textboxValue} onChange={this.handleTextboxValueChange} onKeyPress={this.handleTextboxKeyPress}/>
-        <br />
-      </div>
+      <Mutation mutation={MUTATION_TODO_ADD}>
+        {(addTodo, { data, loading, called, error }) => (
+          <div className="parentContainer">
+            <input className="input" placeholder="Add a todo" value={this.state.textboxValue} onChange={this.handleTextboxValueChange} onKeyPress={e => {
+                this.handleTextboxKeyPress(e, addTodo);
+              }}/>
+            <br />
+          </div>
+        )}
+      </Mutation>
     )
   }
 }
-
-const TodoInputWithMutation = graphql(MUTATION_TODO_ADD, {
-  name: 'addTodoMutation'
-})(TodoInput);
-
-export default TodoInputWithMutation;

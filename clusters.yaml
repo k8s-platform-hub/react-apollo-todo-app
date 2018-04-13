@@ -3,5 +3,5 @@
     configmap: controller-conf
     namespace: hasura
   data: null
-  kubeContext: dignitary81
-  name: dignitary81
+  kubeContext: depression41
+  name: depression41
