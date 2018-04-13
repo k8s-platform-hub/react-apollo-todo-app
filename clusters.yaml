@@ -1,7 +1,6 @@
+clusters:
 - alias: hasura
-  config:
-    configmap: controller-conf
-    namespace: hasura
   data: null
-  kubeContext: depression41
-  name: depression41
+  infra:
+    provider: hasura-free
+version: v1
