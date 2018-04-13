@@ -22,7 +22,7 @@ const TodoList = () => (
         <div className="parentContainer">
           <ul className="todoList">
           {
-            this.props.data.todo.map((todo, index) => {
+            data.todo.map((todo, index) => {
               return (
                 <Todo key={index} todo={todo} />
               );

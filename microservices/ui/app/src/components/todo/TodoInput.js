@@ -27,6 +27,7 @@ export default class TodoInput extends React.Component {
     if (e.key === 'Enter') {
       const newTask = this.state.textboxValue;
       const userId = this.props.userId;
+      const context = this;
       addTodo({
         variables: {
           objects: [{
@@ -43,47 +44,28 @@ export default class TodoInput extends React.Component {
             query: QUERY_TODO,
             data
           })
+          this.setState({
+            ...this.state,
+            textboxValue: ''
+          });
         }
       })
     }
   }
 
-  _addTodo = async (newTask, userId) => {
-    await this.props.addTodoMutation({
-      variables: {
-        objects: [{
-          task: newTask,
-          user_id: userId,
-          completed: false
-        }]
-      },
-      update: (cache, { data: { insert_todo }}) => {
-        const data = cache.readQuery({ query: QUERY_TODO })
-        const insertedTodo = insert_todo.returning;
-        data.todo.splice(0, 0, insertedTodo[0])
-        cache.writeQuery({
-          query: QUERY_TODO,
-          data
-        })
-      }
-    })
-    this.setState({
-      ...this.state,
-      textboxValue: ''
-    });
-  }
-
   render() {
     return (
       <Mutation mutation={MUTATION_TODO_ADD}>
-        {(addTodo, { data, loading, called, error }) => (
-          <div className="parentContainer">
-            <input className="input" placeholder="Add a todo" value={this.state.textboxValue} onChange={this.handleTextboxValueChange} onKeyPress={e => {
-                this.handleTextboxKeyPress(e, addTodo);
-              }}/>
-            <br />
-          </div>
-        )}
+        {(addTodo, { data, loading, called, error }) => {
+          return (
+            <div className="parentContainer">
+              <input className="input" placeholder="Add a todo" value={this.state.textboxValue} onChange={this.handleTextboxValueChange} onKeyPress={e => {
+                  this.handleTextboxKeyPress(e, addTodo);
+                }}/>
+              <br />
+            </div>
+          )
+        }}
       </Mutation>
     )
   }
