@@ -49,6 +49,7 @@ const handleTodoDelete = (deleteTodo, todo) => {
 const Todo = ({ todo }) => (
   <Mutation mutation={MUTATION_TODO_UPDATE}>
     {(updateTodo) => {
+      console.log(updateTodo);
       return (
         <div className="parentContainer">
           <li className="todoItem"
