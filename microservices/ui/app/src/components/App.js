@@ -1,6 +1,6 @@
 import React from 'react';
 import TodoComponent from './todo/TodoComponent';
-import { USER_INFO_KEY, AUTH_URL } from '../constants';
+import { AUTH_URL, getUserInfo, saveUserInfo, redirectToAuthUIKitIfNeeded } from '../constants';
 
 export default class App extends React.Component {
 
@@ -21,52 +21,54 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    const userInfo = localStorage.getItem(USER_INFO_KEY) || null;
-    if (!userInfo) {
-      this.showLoadingIndicator(true);
-      var url = AUTH_URL;
-      var requestOptions = {
-          "method": "GET",
-          "headers": {
-              "Content-Type": "application/json"
-          },
-          "credentials": "include"
-      };
-
-      fetch(url, requestOptions)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          this.setState({
-            ...this.state,
-            loading: false,
-            error: "Unable to get user credentials"
-          });
-        }
-      })
-      .then(json => {
-        localStorage.setItem(USER_INFO_KEY, JSON.stringify(json))
-        this.setState({
-          ...this.state,
-          loading: false,
-          userInfo: json
-        });
-      })
-      .catch(error => {
-        this.setState({
-          ...this.state,
-          loading: false,
-          error: error
-        });
-      });
-    } else {
+    const userInfo = getUserInfo() || null;
+    if (userInfo) {
       this.setState({
         ...this.state,
         loading: false,
-        userInfo: JSON.parse(userInfo)
+        userInfo: userInfo
       })
+      return
     }
+    this.showLoadingIndicator(true);
+    var url = AUTH_URL;
+    var requestOptions = {
+        "method": "GET",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "credentials": "include"
+    };
+
+    fetch(url, requestOptions)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        redirectToAuthUIKitIfNeeded()
+        this.setState({
+          ...this.state,
+          loading: false,
+          error: "Unable to get user credentials"
+        });
+      }
+    })
+    .then(json => {
+      saveUserInfo(json)
+      this.setState({
+        ...this.state,
+        loading: false,
+        userInfo: json
+      });
+    })
+    .catch(error => {
+      this.setState({
+        ...this.state,
+        loading: false,
+        error: "Unknown Error"
+      });
+    });
+
   }
 
   render() {

@@ -27,7 +27,6 @@ export default class TodoInput extends React.Component {
     if (e.key === 'Enter') {
       const newTask = this.state.textboxValue;
       const userId = this.props.userId;
-      const context = this;
       addTodo({
         variables: {
           objects: [{
