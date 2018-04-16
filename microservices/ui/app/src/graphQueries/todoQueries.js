@@ -11,7 +11,7 @@ const QUERY_TODO = gql`
 `;
 
 const MUTATION_TODO_ADD = gql`
-  mutation insert_todo ($objects: [todo_input]){
+  mutation insert_todo ($objects: [todo_input!]){
     insert_todo(objects: $objects) {
       affected_rows
       returning {
@@ -24,7 +24,7 @@ const MUTATION_TODO_ADD = gql`
 `;
 
 const MUTATION_TODO_UPDATE = gql`
-  mutation update_todo ($todoId: Int, $set: todo_input) {
+  mutation update_todo ($todoId: Int, $set: todo_input!) {
     update_todo(where: {id: {_eq: $todoId}} _set: $set) {
       affected_rows
     }

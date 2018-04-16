@@ -1,40 +1,38 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
+import { Query } from "react-apollo";
 import Todo from './Todo';
 import {
   QUERY_TODO,
 } from '../../graphQueries/todoQueries';
 
-class TodoList extends React.Component {
-  render() {
-    if (this.props.data.loading) {
+const TodoList = () => (
+  <Query query={QUERY_TODO}>
+    {({loading, error, data}) => {
+      if (loading) {
+        return (
+          <div>Loading. Please wait...</div>
+        );
+      }
+      if (error) {
+        return (
+          <div>{error.message}</div>
+        );
+      }
       return (
-        <div>Loading. Please wait...</div>
-      );
-    }
+        <div className="parentContainer">
+          <ul className="todoList">
+          {
+            data.todo.map((todo, index) => {
+              return (
+                <Todo key={index} todo={todo} />
+              );
+            })
+          }
+          </ul>
+        </div>
+      )
+    }}
+  </Query>
+);
 
-    if (this.props.data.error) {
-      return (
-        <div>{this.props.data.error}</div>
-      );
-    }
-
-    return (
-      <div className="parentContainer">
-        <ul className="todoList">
-        {
-          this.props.data.todo.map((todo, index) => {
-            return (
-              <Todo key={index} todo={todo} />
-            );
-          })
-        }
-        </ul>
-      </div>
-    )
-  }
-}
-
-const TodoListWithQuery = graphql(QUERY_TODO)(TodoList)
-
-export default TodoListWithQuery;
+export default TodoList;

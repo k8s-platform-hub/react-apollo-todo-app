@@ -1,0 +1,15 @@
+- args:
+    role: user
+    table: todo
+  type: drop_update_permission
+- args:
+    permission:
+      columns:
+      - completed
+      - task
+      filter:
+        user_id:
+          $eq: X-HASURA-USER-ID
+    role: user
+    table: todo
+  type: create_update_permission

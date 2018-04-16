@@ -1,0 +1,171 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+}
+
+"the root query type"
+type query_root {
+  "fetch data from the table: todo"
+  todo(
+
+    "filter the rows returned"
+    where: todo_bool_exp
+
+    "limit the nuber of rows returned"
+    limit: Int
+
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+
+    "sort the rows by one or more columns. Use +colName for ascending and -colName for descending"
+    order_by: [String]
+
+  ): [todo]
+
+}
+
+"the root mutation type"
+type mutation_root {
+  "insert data into the table: todo"
+  insert_todo(
+
+    "the rows to be inserted"
+    objects: [todo_input!]
+
+  ): todo_mutation_response
+
+  "update data of the table: todo"
+  update_todo(
+
+    "filter the rows which have to be updated"
+    where: todo_bool_exp!
+
+    "sets the columns of the filtered rows to the given values"
+    _set: todo_input!
+
+  ): todo_mutation_response
+
+  "delete data from the table: todo"
+  delete_todo(
+
+    "filter the rows which have to be deleted"
+    where: todo_bool_exp!
+
+  ): todo_mutation_response
+
+}
+
+scalar JSON
+"expression to compare columns of type text. All fields are combined with logical 'AND'."
+input text_comparison_exp {
+  _eq: String
+  _neq: String
+  _gt: String
+  _lt: String
+  _gte: String
+  _lte: String
+  _in: [String]
+  _nin: [String]
+  _ceq: [String]
+  _cneq: [String]
+  _cgt: [String]
+  _clt: [String]
+  _cgte: [String]
+  _clte: [String]
+  _like: [String]
+  _nlike: [String]
+  _ilike: [String]
+  _nilike: [String]
+  _similar: [String]
+  _nsimilar: [String]
+}
+
+"expression to compare columns of type integer. All fields are combined with logical 'AND'."
+input integer_comparison_exp {
+  _eq: Int
+  _neq: Int
+  _gt: Int
+  _lt: Int
+  _gte: Int
+  _lte: Int
+  _in: [Int]
+  _nin: [Int]
+  _ceq: [String]
+  _cneq: [String]
+  _cgt: [String]
+  _clt: [String]
+  _cgte: [String]
+  _clte: [String]
+}
+
+"expression to compare columns of type boolean. All fields are combined with logical 'AND'."
+input boolean_comparison_exp {
+  _eq: Boolean
+  _neq: Boolean
+  _gt: Boolean
+  _lt: Boolean
+  _gte: Boolean
+  _lte: Boolean
+  _in: [Boolean]
+  _nin: [Boolean]
+  _ceq: [String]
+  _cneq: [String]
+  _cgt: [String]
+  _clt: [String]
+  _cgte: [String]
+  _clte: [String]
+}
+
+"table 'todo' with all columns and relationships"
+type todo {
+    completed: Boolean
+
+    id: Int
+
+    task: String
+
+    user_id: Int
+
+}
+
+"table 'todo' with only postgres columns (no relationships)"
+type todo_no_rels {
+    completed: Boolean
+
+    id: Int
+
+    task: String
+
+    user_id: Int
+
+}
+
+"response of any mutation on the table 'todo'"
+type todo_mutation_response {
+  "number of affected rows by the mutation"
+  affected_rows: Int
+
+  "data of the affected rows by the mutation"
+  returning: todo_no_rels
+
+}
+
+"input type for inserting/updating data in table todo"
+input todo_input {
+  completed: Boolean
+  id: Int
+  task: String
+  user_id: Int
+}
+
+"boolean expression to filter rows from the table todo. All fields are combined with logical 'AND'."
+input todo_bool_exp {
+  completed: boolean_comparison_exp
+  id: integer_comparison_exp
+  task: text_comparison_exp
+  user_id: integer_comparison_exp
+  _not: todo_bool_exp
+  _and: [todo_bool_exp]
+  _or: [todo_bool_exp]
+}
+
